@@ -1,8 +1,8 @@
-function Header() {
+function Header(props) {
   return (
-    <nav class="navbar navbar-dark bg-secondary">
+    <nav className="navbar navbar-dark bg-secondary">
       <div className="row col-12 d-flex justify-content-center text-white">
-        <span className="h3">SignUp</span>
+        <span className="h3">{props.heading}</span>
       </div>
     </nav>
   );
