@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Header from "../Header/Header";
-
+import { sendDetailsToServer } from "../../helper/sendDetailsToServer";
 function Signup(props) {
   const [state, setState] = useState({
     email: "",
     password: "",
     confirmPassword: "",
+    successMessage: null,
   });
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -13,16 +14,23 @@ function Signup(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (state.email.length) {
+    if (state.email.length && state.password.length) {
       if (state.password === state.confirmPassword) {
-        //   sendDetailsToServer();
         console.log("Password matched");
+        sendDetailsToServer(state, "/users/signup").then((response) => {
+          if (response.status === 200) {
+            alert(response.data);
+            setState((prevState) => ({
+              ...prevState,
+              successMessage: "Registration Successful",
+            }));
+          }
+        });
       } else {
-        //   props.showError("Password does not match");
         alert("Password does not match !!!");
       }
     } else {
-      alert("Enter valid Email");
+      alert("Enter valid Inputs");
     }
   };
   return (
@@ -76,6 +84,13 @@ function Signup(props) {
               Submit
             </button>
           </form>
+          {/* <div
+            className="alert alert-success mt-2"
+            style={{ display: state.successMessage ? "block" : "none" }}
+            role="alert"
+          >
+            {state.successMessage}
+          </div> */}
         </div>
       </div>
     </>
