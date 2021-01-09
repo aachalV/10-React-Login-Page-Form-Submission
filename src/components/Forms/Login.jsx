@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Header from "../Header/Header";
 import { sendDetailsToServer } from "../../helper/sendDetailsToServer";
-function Signup(props) {
+function Login(props) {
   let history = useHistory(); //History Hook
   const [state, setState] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
     successMessage: null,
   });
   const handleChange = (event) => {
@@ -16,33 +15,24 @@ function Signup(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (
-      state.email.length &&
-      state.password.length &&
-      state.confirmPassword.length
-    ) {
+    if (state.email.length && state.password.length) {
       if (state.email.match("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
         if (
           state.password.match(
             "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
           )
         ) {
-          if (state.password === state.confirmPassword) {
-            console.log("Password matched");
-            sendDetailsToServer(state, "/users/signup").then((response) => {
-              if (response.status === 200) {
-                alert(response.data);
-                setState((prevState) => ({
-                  ...prevState,
-                  successMessage: "SignUp Successfull",
-                }));
-                console.log(state.successMessage);
-                history.push("/users/renderUser", state);
-              }
-            });
-          } else {
-            alert("Password does not match !!!");
-          }
+          sendDetailsToServer(state, "/users/login").then((response) => {
+            if (response.status === 200) {
+              alert(response.status);
+              setState((prevState) => ({
+                ...prevState,
+                successMessage: "Login Successfull",
+              }));
+              console.log(state.successMessage);
+              history.push("/users/renderUser", state);
+            }
+          });
         } else {
           alert(
             "The password must be atleast 8 characters and should contain atleast one => uppercase alphabetical character , lowercase alphabetical character, numeric character,special character"
@@ -57,7 +47,7 @@ function Signup(props) {
   };
   return (
     <>
-      <Header heading={"Signup"} />
+      <Header heading={"Login"} />
       <div className="d-flex justify-content-center">
         <div className="card col-12 col-lg-4 login-card my-5 ">
           <form className="my-3">
@@ -91,17 +81,7 @@ function Signup(props) {
                 alphabetical ,numerical and special characters
               </small>
             </div>
-            <div className="form-group text-left">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                placeholder="Confirm Password"
-                value={state.confirmPassword}
-                onChange={handleChange}
-              />
-            </div>
+
             <button
               type="submit"
               className="btn btn-primary"
@@ -110,17 +90,10 @@ function Signup(props) {
               Submit
             </button>
           </form>
-          <div
-            className="alert alert-success mt-2"
-            style={{ display: state.successMessage ? "block" : "none" }}
-            role="alert"
-          >
-            {state.successMessage}
-          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default Signup;
+export default Login;

@@ -18,7 +18,7 @@ class User extends Component {
         <ParticlesBg num={60} type="lines" bg={true} />
         <h2>Welcome</h2>
         <h2>{this.props.location.state.email}</h2>
-        <h2>You are registered</h2>
+        <h2>{this.props.location.state.successMessage}</h2>
       </div>
     );
   }

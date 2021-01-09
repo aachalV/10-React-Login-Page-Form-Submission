@@ -2,6 +2,8 @@ import { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "../pages/home/Home";
 import Signup from "../components/Forms/Signup";
+import Login from "../components/Forms/Login";
+
 import User from "../pages/user/renderUser";
 class Router extends Component {
   render() {
@@ -10,6 +12,7 @@ class Router extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/users/signup" exact component={Signup} />
+          <Route path="/users/login" exact component={Login} />
           <Route path="/users/renderUser" exact component={User} />
         </Switch>
       </BrowserRouter>

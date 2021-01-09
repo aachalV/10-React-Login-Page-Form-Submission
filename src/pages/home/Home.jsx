@@ -8,7 +8,9 @@ function Home() {
     history.push("/users/signup");
   };
 
-  const directToLogin = (event) => {};
+  const directToLogin = (event) => {
+    history.push("/users/login");
+  };
   return (
     <div>
       <header id="home">
