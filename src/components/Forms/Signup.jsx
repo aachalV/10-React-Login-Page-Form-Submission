@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Header from "../Header/Header";
 import { sendDetailsToServer } from "../../helper/sendDetailsToServer";
 function Signup(props) {
+  let history = useHistory(); //History Hook
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -19,11 +21,13 @@ function Signup(props) {
         console.log("Password matched");
         sendDetailsToServer(state, "/users/signup").then((response) => {
           if (response.status === 200) {
-            alert(response.data);
+            alert("Sigup Successfull");
             setState((prevState) => ({
               ...prevState,
               successMessage: "Registration Successful",
             }));
+
+            history.push("/users/renderUser", state);
           }
         });
       } else {
