@@ -22,6 +22,5 @@ export const sendDetailsToServer = (data, path) => {
     email: data.email,
     password: data.password,
   };
-  let response = axios.post(API_BASE_URL + path, payload);
-  return response;
+  return axios.post(API_BASE_URL + path, payload);
 };

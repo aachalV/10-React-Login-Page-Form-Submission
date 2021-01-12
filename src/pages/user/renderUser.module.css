@@ -16,3 +16,7 @@ h2 {
   text-align: center;
   text-decoration: none;
 }
+.errMsg {
+  color: #000;
+  text-align: center;
+}

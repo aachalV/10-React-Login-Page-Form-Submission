@@ -8,11 +8,14 @@ function Signup(props) {
     email: "",
     password: "",
     confirmPassword: "",
-    successMessage: null,
+    successMessage: "",
   });
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setState((prevState) => ({ ...prevState, [id]: value }));
+    setState({ ...state, [id]: value });
+
+    // const { id, value } = event.target;
+    // setState((prevState) => ({ ...prevState, [id]: value }));
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,16 +31,19 @@ function Signup(props) {
           )
         ) {
           if (state.password === state.confirmPassword) {
-            console.log("Password matched");
             sendDetailsToServer(state, "/users/signup").then((response) => {
-              if (response.status === 200) {
-                alert(response.data);
-                setState((prevState) => ({
-                  ...prevState,
-                  successMessage: "SignUp Successfull",
-                }));
-                console.log(state.successMessage);
+              if (
+                response.status === 200 &&
+                response.data !== "User already registered"
+              ) {
+                setState({ ...state, successMessage: "Successfull" });
                 history.push("/users/renderUser", state);
+              } else if (
+                response.status === 200 &&
+                response.data === "User already registered"
+              ) {
+                setState({ ...state, successMessage: "Unsuccessfull" });
+                console.log(state.successMessage);
               }
             });
           } else {
@@ -45,7 +51,7 @@ function Signup(props) {
           }
         } else {
           alert(
-            "The password must be atleast 8 characters and should contain atleast one => uppercase alphabetical character , lowercase alphabetical character, numeric character,special character"
+            "The password must be atleast 6 characters and should contain atleast one => uppercase alphabetical character , lowercase alphabetical character, numeric character,special character"
           );
         }
       } else {
@@ -87,7 +93,7 @@ function Signup(props) {
                 onChange={handleChange}
               />
               <small id="passwordHelp" className="form-text text-muted">
-                Minimum 8 characters. Must include upppercase and lowercase
+                Minimum 6 characters. Must include upppercase and lowercase
                 alphabetical ,numerical and special characters
               </small>
             </div>
@@ -112,7 +118,10 @@ function Signup(props) {
           </form>
           <div
             className="alert alert-success mt-2"
-            style={{ display: state.successMessage ? "block" : "none" }}
+            style={{
+              display:
+                state.successMessage === "Unsuccessfull" ? "block" : "none",
+            }}
             role="alert"
           >
             {state.successMessage}

@@ -23,14 +23,15 @@ function Login(props) {
           )
         ) {
           sendDetailsToServer(state, "/users/login").then((response) => {
-            if (response.status === 200) {
-              alert(response.status);
-              setState((prevState) => ({
-                ...prevState,
-                successMessage: "Login Successfull",
-              }));
-              console.log(state.successMessage);
+            if (
+              response.status === 200 &&
+              response.data != "User not registered, Sigup first"
+            ) {
+              console.log(response.data);
+              setState({ ...state, successMessage: "Login successfull !!" });
               history.push("/users/renderUser", state);
+            } else {
+              alert(response.data);
             }
           });
         } else {
