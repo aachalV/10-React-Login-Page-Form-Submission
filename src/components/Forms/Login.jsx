@@ -16,7 +16,11 @@ function Login(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (state.email.length && state.password.length) {
-      if (state.email.match("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+      if (
+        state.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
         if (
           state.password.match(
             "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
@@ -25,9 +29,9 @@ function Login(props) {
           sendDetailsToServer(state, "/users/login").then((response) => {
             if (
               response.status === 200 &&
-              response.data != "User not registered, Sigup first"
+              response.data !== "User not registered, Sigup first"
             ) {
-              console.log(response.data);
+              console.log(response.data.status);
               setState({ ...state, successMessage: "Login successfull !!" });
               history.push("/users/renderUser", state);
             } else {
@@ -78,7 +82,7 @@ function Login(props) {
                 onChange={handleChange}
               />
               <small id="passwordHelp" className="form-text text-muted">
-                Minimum 8 characters. Must include upppercase and lowercase
+                Minimum 6 characters. Must include upppercase and lowercase
                 alphabetical ,numerical and special characters
               </small>
             </div>

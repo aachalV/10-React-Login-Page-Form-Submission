@@ -24,7 +24,11 @@ function Signup(props) {
       state.password.length &&
       state.confirmPassword.length
     ) {
-      if (state.email.match("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+      if (
+        state.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
         if (
           state.password.match(
             "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
@@ -34,7 +38,7 @@ function Signup(props) {
             sendDetailsToServer(state, "/users/signup").then((response) => {
               if (
                 response.status === 200 &&
-                response.data !== "User already registered"
+                response.data === "New user created"
               ) {
                 setState({ ...state, successMessage: "Successfull" });
                 history.push("/users/renderUser", state);
